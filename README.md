@@ -1,6 +1,3 @@
-You're right. **Everything inside the block below is the README.** Copy from `# VoiceCart...` all the way down to `This project was developed...` — **nothing outside the block needs to be copied.**
-
-````markdown
 # VoiceCart — Voice Command Shopping Assistant
 
 A voice-controlled shopping list with natural-language commands, smart suggestions, product categorization, and voice-activated search — built as a lightweight static web app using plain HTML, CSS, and JavaScript with no JavaScript/package dependencies or build step.
