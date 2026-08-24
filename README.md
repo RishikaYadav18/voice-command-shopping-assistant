@@ -2,7 +2,7 @@
 
 A voice-controlled shopping list with natural-language commands, smart suggestions, product categorization, and voice-activated search — built as a lightweight static web app using plain HTML, CSS, and JavaScript with no JavaScript/package dependencies or build step.
 
-**Live Demo:** YOUR_DEPLOYED_URL
+**Live Demo:** https://rishikayadav18.github.io/voice-command-shopping-assistant/
 
 **GitHub Repository:** https://github.com/RishikaYadav18/voice-command-shopping-assistant
 
