@@ -1,219 +1,153 @@
+You're right. **Everything inside the block below is the README.** Copy from `# VoiceCart...` all the way down to `This project was developed...` — **nothing outside the block needs to be copied.**
+
+````markdown
 # VoiceCart — Voice Command Shopping Assistant
 
-VoiceCart is a voice-based shopping assistant that allows users to manage their shopping list using natural-language voice commands, receive smart product suggestions, and search for products using voice or text.
+A voice-controlled shopping list with natural-language commands, smart suggestions, product categorization, and voice-activated search — built as a lightweight static web app using plain HTML, CSS, and JavaScript with no JavaScript/package dependencies or build step.
 
-## Live Demo
+**Live Demo:** YOUR_DEPLOYED_URL
 
-**Live Application:**  
-https://YOUR_USERNAME.github.io/voice-command-shopping-assistant/
+**GitHub Repository:** https://github.com/RishikaYadav18/voice-command-shopping-assistant
 
-**GitHub Repository:**  
-https://github.com/YOUR_USERNAME/voice-command-shopping-assistant
+## Approach
 
-> Replace `YOUR_USERNAME` with your GitHub username after deployment.
+VoiceCart is a static web app so it can be deployed without build tooling or a backend. Voice input uses the browser's native Web Speech API rather than a paid speech-to-text service. A small rule-based parser (`parseCommand`) matches intent phrases such as "add", "I need", "remove", and "find ... under ₹150", and extracts item, quantity, and price filters.
 
----
+The core design decision is that add, search, and suggestion flows resolve against one shared product catalogue (`findCatalogMatch`). Matching prefers the most specific catalogue entry, keeping categorization and pricing consistent instead of relying on loose substring guesses. Once a list item is matched to the catalogue, it carries its corresponding price, allowing the application to display per-item costs and a running subtotal without separate pricing logic.
+
+Suggestions combine three signals: recent shopping history, a small seasonal calendar, and a substitutes map. Suggested products are resolved through the same catalogue so their displayed prices remain consistent with the products that can be added to the list.
+
+Application state persists per browser using `localStorage`.
 
 ## Features
 
-### 1. Voice Input
+### Voice Input
 
-- Add shopping items using natural voice commands.
-- Remove items using voice commands.
-- Modify item quantities using voice commands.
-- Supports multiple voice languages/locales:
-  - English (India)
-  - Hindi
-  - English (US)
-  - English (UK)
-- Displays the recognized speech in real time.
-- Provides visual feedback while voice recognition is active.
-- Includes basic voice-support detection and error handling.
+- Voice-controlled shopping-list actions using the Web Speech API.
+- Live speech transcript with interim recognition feedback.
+- Natural-language command variations such as:
+  - "Add milk"
+  - "I need apples"
+  - "I want to buy bananas"
+  - "Add 2 bottles of water"
+  - "Remove milk"
+- Visual listening and processing states.
+- Basic browser and microphone error handling.
 
-### 2. Natural Language Commands
+### Multilingual Voice Recognition
 
-The application accepts natural variations of shopping commands rather than requiring a fixed command format.
+The language selector supports:
 
-Examples:
+- English (India)
+- Hindi
+- English (US)
+- English (UK)
 
-```text
-Add milk
-I need apples
-Add 2 bottles of water
-Buy 5 oranges
-Remove milk
-Find organic apples
-Find toothpaste under ₹300
-Show suggestions
-````
+The selected locale is applied to browser speech recognition.
 
-The recognized command is processed on the client side and mapped to the appropriate shopping-list or search action.
+### Smart Suggestions
 
-### 3. Shopping List Management
+Suggestions combine:
 
-* Add items to the shopping list.
-* Remove items from the list.
-* Modify item quantities.
-* Increase or decrease quantities using list controls.
-* Mark items as completed.
-* Automatically categorize products.
-* Display the total number of items.
-* Calculate the shopping-list subtotal.
-* Clear the complete shopping list.
-* Persist shopping-list data using browser `localStorage`.
+- Recent shopping history.
+- Seasonal recommendations.
+- Product substitutes.
 
-### 4. Smart Suggestions
+Examples include suggesting almond milk as an alternative to regular milk.
 
-The application provides shopping suggestions based on:
+Suggested products are resolved against the product catalogue and display their catalogue price.
 
-* Previous shopping activity/history.
-* Product preferences.
-* Seasonal recommendations.
-* Product substitutes and alternatives.
+### Shopping List Management
 
-Suggestions can be refreshed directly from the interface.
+- Add items by voice or through the interface.
+- Remove items by voice.
+- Modify quantities.
+- Specify quantities using natural-language commands.
+- Automatic product categorization.
+- Per-item pricing.
+- Running subtotal.
+- Item completion state.
+- Clear-all functionality.
+- Persistent browser state using `localStorage`.
 
-### 5. Voice-Activated Product Search
+### Voice-Activated Product Search
 
-Users can search for products using either voice commands or text.
+Products can be searched using voice or text.
 
 Search supports:
 
-* Product names.
-* Brands.
-* Categories.
-* Maximum price filtering.
-* Product details.
-* Product prices.
-* Adding search results directly to the shopping list.
+- Product names.
+- Brands.
+- Categories.
+- Maximum price filtering.
 
-Example:
+Example commands:
 
 ```text
 Find organic apples
-Find toothpaste under ₹300
-Find NutriBite snacks
-```
+Find toothpaste under ₹150
+Find snacks
+````
 
-### 6. Product Filtering
+Search results are displayed as product cards and can be added directly to the shopping list.
 
-Products can be filtered by:
+### UI/UX
 
-* Brand
-* Maximum price
-* Category
-
-Available categories include:
-
-```text
-Produce
-Dairy
-Beverages
-Snacks
-Bakery
-Household
-Personal Care
-Pantry
-```
-
-### 7. User Interface
-
-The application provides a minimalist and responsive interface designed for both desktop and mobile use.
-
-UI features include:
-
-* Voice interaction interface.
+* Minimalist responsive interface.
+* Mobile-friendly layout.
+* Category-based visual organization.
 * Live speech transcript.
-* Visual microphone feedback.
-* Shopping-list display.
-* Smart suggestion cards.
-* Product search interface.
-* Loading/processing state.
-* Toast notifications.
+* "Listening..." and "Processing command..." states.
+* Toast confirmations and error messages.
 * Recent activity log.
-* Responsive mobile layout.
-* Accessible labels and controls.
+* Empty-state guidance.
+* Accessible labels for interactive controls.
 
----
+## Not Implemented / Simplifications
 
-## Technology Stack
+The product catalogue and purchase history use local mock data rather than a live retailer API or server-side user account. This keeps the assessment version lightweight and avoids requiring paid infrastructure.
 
-The project intentionally uses a lightweight client-side architecture.
+The NLP layer is rule-based using phrase and regular-expression matching rather than a trained language model. It is designed to handle the command patterns required by the assessment rather than act as a general-purpose NLP system.
 
-### Frontend
+There are no user accounts or cloud synchronization. Shopping-list state is stored per browser using `localStorage`.
+
+Product prices and availability are demonstration data and do not represent real-time retailer inventory.
+
+## Technology
 
 * HTML5
 * CSS3
 * Vanilla JavaScript
+* Web Speech API
+* Browser `localStorage`
+* Google Fonts
 
-### Browser APIs
+No framework, `package.json`, npm installation, or build process is required.
 
-* Web Speech API for voice recognition.
-* `localStorage` for persistent shopping-list and shopping-history data.
-
-### External Resources
-
-* Google Fonts for typography.
-
-No frontend framework or package manager is required.
-
----
-
-## Architecture
-
-The application is implemented as a static client-side web application.
+## Project Structure
 
 ```text
-User
- │
- ├── Voice Command
- │       │
- │       ▼
- │   Web Speech API
- │       │
- │       ▼
- │  Command Processing
- │       │
- │       ├── Add / Remove / Modify
- │       │
- │       ├── Product Search
- │       │
- │       └── Suggestions
- │
- └── Text / UI Interaction
-         │
-         ▼
-     Application Logic
-         │
-         ├── Shopping List
-         ├── Product Catalogue
-         ├── Recommendations
-         └── Activity History
-                 │
-                 ▼
-             localStorage
+voicecart/
+├── index.html
+├── app.js
+├── styles.css
+├── README.md
+└── .gitignore
 ```
 
-Voice recognition is handled directly by the browser using the Web Speech API. Recognized speech is processed by the application and mapped to shopping-list actions, product searches, or suggestion requests.
-
-Shopping-list information and relevant user activity are persisted locally using browser `localStorage`, allowing the list to remain available after refreshing the page.
-
----
+* `index.html` — application markup and layout.
+* `app.js` — product catalogue, command parsing, shopping-list state, speech recognition, search, suggestions, and UI logic.
+* `styles.css` — application styling, responsive layouts, states, and component styling.
+* `README.md` — project documentation.
+* `.gitignore` — excludes unnecessary and sensitive local files.
 
 ## Running Locally
 
-### Requirements
+For reliable browser voice-recognition behavior, serve the application through a local HTTP server rather than opening the HTML directly using `file://`.
 
-* Google Chrome or another browser with Web Speech API support.
-* Python 3 or VS Code with the Live Server extension.
+### Using VS Code Live Server
 
-No `npm install` or dependency installation is required.
-
-### Option 1 — VS Code Live Server
-
-Open the project folder in VS Code.
-
-Open `index.html` using Live Server.
+Open the project folder in VS Code and open `index.html` using Live Server.
 
 The application will be available at a URL similar to:
 
@@ -221,9 +155,9 @@ The application will be available at a URL similar to:
 http://127.0.0.1:5500/index.html
 ```
 
-### Option 2 — Python HTTP Server
+### Using Python
 
-Open Terminal in the project directory and run:
+From the project directory:
 
 ```bash
 python3 -m http.server 8000
@@ -235,235 +169,86 @@ Then open:
 http://localhost:8000
 ```
 
-Chrome is recommended for testing voice recognition.
-
----
+Google Chrome or Microsoft Edge is recommended for voice recognition. Grant microphone permission when prompted.
 
 ## Example Voice Commands
 
-### Add items
+### Add
 
 ```text
 Add milk
-Add apples
+I need apples
+I want to buy 3 bananas
 Add 2 bottles of water
-Buy 5 oranges
-I need bread
 ```
 
-### Remove items
+### Remove
 
 ```text
 Remove milk
-Remove apples from my list
-Delete bread
-```
-
-### Modify quantities
-
-```text
-Change quantity to 3 for oranges
-Add 2 more bottles of water
+Remove milk from my list
 ```
 
 ### Search
 
 ```text
+Find toothpaste under 150
 Find organic apples
-Find toothpaste under ₹300
-Find snacks
-Find FreshFarm products
 ```
 
 ### Suggestions
 
 ```text
 Show suggestions
-Give me recommendations
-What should I buy?
 ```
 
----
+### Clear List
 
-## Data and Product Catalogue
+```text
+Clear my list
+```
 
-The application uses a local product catalogue for the assessment demonstration.
+## Error Handling & UX States
 
-Product information such as:
+The application provides feedback for common interaction and voice-recognition failures:
 
-* Product name
-* Brand
-* Category
-* Price
-* Product attributes
-* Substitutes
-
-is represented locally in the application.
-
-The catalogue is intended for demonstration purposes and does not represent real-time retailer inventory.
-
----
-
-## Limitations
-
-* Voice recognition depends on browser support for the Web Speech API.
-* Microphone permission is required for voice commands.
-* Voice recognition accuracy can vary depending on browser, microphone quality, pronunciation, language, and background noise.
-* Product prices and availability are demonstration data.
-* The application does not connect to a real-time retailer inventory system.
-* The assessment version does not include payment or checkout functionality.
-* Shopping-list data is stored locally in the browser rather than in a server-side database.
-* Clearing browser site data will remove locally stored shopping-list information.
-
----
+* Unsupported voice recognition → status feedback and unavailable microphone state.
+* Microphone permission or recognition errors → explanatory toast messages.
+* Unrecognized commands → prompt with an example command.
+* Item not found during removal → notification identifying the missing item.
+* Empty or invalid searches → appropriate search feedback.
+* "Listening..." and "Processing command..." states provide visual feedback during voice interactions.
 
 ## Deployment
 
-The application is deployed as a static website using **GitHub Pages**.
+The application is deployed as a static website using GitHub Pages.
 
-The project does not require a backend server or paid cloud service for the assessment version.
+Because the project contains only client-side HTML, CSS, and JavaScript, no backend server or build process is required for deployment.
 
----
+## Limitations
 
-## Project Structure
-
-```text
-voice-command-shopping-assistant/
-│
-├── index.html
-├── app.js
-├── styles.css
-├── README.md
-└── .gitignore
-```
-
-### `index.html`
-
-Contains the application structure and user interface.
-
-### `app.js`
-
-Contains:
-
-* Voice recognition
-* Natural-language command processing
-* Shopping-list management
-* Product search
-* Filtering
-* Smart suggestions
-* Product substitutions
-* Local storage
-* Activity tracking
-* UI interactions
-
-### `styles.css`
-
-Contains:
-
-* Application styling
-* Responsive layouts
-* Voice interaction states
-* Shopping-list styling
-* Search and filter styling
-* Suggestion cards
-* Mobile responsiveness
-* Accessibility-related styling
-
----
-
-## Design Approach
-
-The application was designed with the assessment's limited time and dependency requirements in mind.
-
-Instead of introducing a large frontend framework or backend infrastructure, the project uses vanilla JavaScript and browser APIs. This keeps the application lightweight, easy to run, easy to review, and simple to deploy.
-
-The main focus was placed on demonstrating the complete user flow:
-
-```text
-Voice Input
-     ↓
-Command Understanding
-     ↓
-Shopping/Search Action
-     ↓
-Visual Feedback
-     ↓
-Persistent User Data
-```
-
-This approach also avoids exposing API keys or requiring paid external services.
-
----
-
-## Error Handling and User Feedback
-
-The application provides feedback for important user interactions, including:
-
-* Unsupported voice recognition.
-* Microphone permission issues.
-* Unrecognized commands.
-* Empty searches.
-* Invalid quantities.
-* Search results.
-* Successful shopping-list actions.
-* Loading/processing states.
-
-Visual feedback is provided through the microphone state, transcript area, loading overlay, status indicators, activity log, and toast notifications.
-
----
-
-## Assessment Requirements Coverage
-
-| Requirement                 | Implementation                                 |
-| --------------------------- | ---------------------------------------------- |
-| Voice command recognition   | Web Speech API                                 |
-| Natural language processing | Client-side command parsing                    |
-| Multilingual support        | Multiple speech recognition locales            |
-| Add/remove items            | Voice and UI controls                          |
-| Quantity management         | Voice commands and UI controls                 |
-| Automatic categorization    | Product/category mapping                       |
-| Shopping history            | Browser localStorage                           |
-| Product recommendations     | Local recommendation logic                     |
-| Seasonal recommendations    | Seasonal suggestion logic                      |
-| Product substitutes         | Alternative product suggestions                |
-| Voice product search        | Web Speech API + search processing             |
-| Price filtering             | Maximum-price filter                           |
-| Brand filtering             | Brand filter                                   |
-| Responsive UI               | CSS responsive layouts                         |
-| Visual feedback             | Transcript, status, loading and toast feedback |
-| Error handling              | Client-side validation and status handling     |
-| Persistent data             | Browser localStorage                           |
-| Hosting                     | GitHub Pages                                   |
-
----
+* Voice recognition accuracy depends on browser support, microphone quality, pronunciation, language, and background noise.
+* Product prices and catalogue information are demonstration data.
+* The application does not connect to real-time retailer inventory.
+* Shopping-list data is stored locally in the browser.
+* Clearing browser site data removes locally stored application state.
+* The assessment version does not include payment or checkout functionality.
 
 ## Future Improvements
 
-If this application were extended beyond the assessment scope, potential improvements would include:
+Potential extensions beyond the assessment scope include:
 
-* Integration with a real supermarket/product API.
-* Real-time inventory and price information.
-* User authentication and cloud synchronization.
-* Personalized recommendation models.
+* Real-time retailer inventory and pricing.
+* User accounts and cloud synchronization.
 * More advanced multilingual NLP.
+* Personalized recommendation models.
 * Barcode scanning.
 * Location-aware store recommendations.
-* Real-time sale and availability detection.
-* Server-side data storage.
-* Integration with online grocery checkout systems.
-
----
+* Online grocery checkout integration.
 
 ## License
 
 This project was developed as a technical assessment project.
 
-````
-
-### Before you save it
-
-There are **two placeholders** you should change after creating your GitHub repository:
-
-```text
-YOUR_USERNAME
-````
+```
+```
