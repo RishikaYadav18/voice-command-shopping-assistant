@@ -246,6 +246,3 @@ Potential extensions beyond the assessment scope include:
 ## License
 
 This project was developed as a technical assessment project.
-
-```
-```
